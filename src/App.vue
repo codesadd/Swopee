@@ -16,7 +16,7 @@ export default {
 }
 </script>
 
-<style>
+<style scope>
   .spacer-50{
     padding-top: 50px
   }

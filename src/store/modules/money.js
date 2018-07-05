@@ -7,7 +7,26 @@ const state = {
     name: 'Kriangkrai Prommaithong',
     tel: '0818578334',
     address: 'brabra',
-    listOfScope: [{}]
+    listOfScope: [
+      {
+        id: 1,
+        ownerInfo: {
+          name: 'Kriangkrai'
+        },
+        totalPlayer: 20,
+        initMoney: 1000,
+        listOfInterest: [1400, 1500]
+      },
+      {
+        id: 2,
+        ownerInfo: {
+          name: 'Nutt'
+        },
+        totalPlayer: 30,
+        initMoney: 2000,
+        listOfInterest: [1400, 2200]
+      }
+    ]
   }
 }
 
@@ -29,6 +48,9 @@ const actions = {
 const getters = {
   dataUser () {
     return state.user
+  },
+  getTransactionById: (state) => (id) => {
+    return state.user.listOfScope.filter(e => e.id === parseInt(id))
   }
 }
 

@@ -2,9 +2,12 @@
   <div>
     <nav class="navbar is-light" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <a class="navbar-item" href="https://bulma.io">
-          <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
-        </a>
+        <router-link to="/">
+          <a class="navbar-item navbar-left">
+            <i class="fas fa-dollar-sign fa-2x"></i>
+            <strong>wopee</strong>
+          </a>
+        </router-link>
 
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
           <span aria-hidden="true"></span>
@@ -20,9 +23,11 @@
               Kriangkrai Prommaithong
             </a>
             <div class="navbar-dropdown is-right">
-              <a class="navbar-item" href="/documentation/overview/start/">
-                Settings
-              </a>
+              <router-link to="/dashboard">
+                <a class="navbar-item" href="/documentation/overview/start/">
+                  Dashboard
+                </a>
+              </router-link>
               <a class="navbar-item" href="/documentation/overview/start/">
                 test manu
               </a>
@@ -44,9 +49,13 @@ export default {
 }
 </script>
 
-<style>
+<style scope>
+
   .navbar-right{
     padding-right: 10px
+  }
+  .navbar-left{
+    padding-left: 40px
   }
 
 </style>
