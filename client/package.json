@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "buefy": "^0.6.6",
+    "firebase": "^5.2.0",
     "vue": "^2.5.16",
     "vue-cleave": "^1.2.2",
     "vue-currency-filter": "^2.2.6",

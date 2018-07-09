@@ -4,6 +4,8 @@ import 'buefy/lib/buefy.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import firebase from 'firebase/app'
+import config from './config'
 import axios from 'axios'
 import VueCurrencyFilter from 'vue-currency-filter'
 
@@ -18,7 +20,7 @@ Vue.use(VueCurrencyFilter,
     symbolPosition: '',
     symbolSpacing: true
   })
-
+firebase.initializeApp(config.firebaseConfig)
 axios.defaults.baseURL = 'https://money-socity.firebaseio.com/'
 axios.defaults.headers.get['Accepts'] = 'application/json'
 
@@ -35,7 +37,7 @@ axios.interceptors.request.eject(reqInterceptor)
 axios.interceptors.response.eject(resInterceptor)
 
 new Vue({
-  router,
   store,
+  router,
   render: h => h(App)
 }).$mount('#app')

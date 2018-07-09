@@ -5,8 +5,8 @@
           <div class="card-content">
             <div class="content">
               เถ้าแชร์ : {{ scope.ownerInfo.name }}
-              <br> เงินต้น : {{totalMoney}}
-              <br> ดอกเบี้ยสะสม : {{totalInterestNow}}
+              <br> เงินต้น : {{ totalMoney | currency}}
+              <br> ดอกเบี้ยสะสม : {{ totalInterestNow | currency }}
             </div>
           </div>
         </div>
@@ -24,8 +24,8 @@ export default {
     }
   },
   mounted () {
-    this.totalMoney = this.scope.totalPlayer * this.scope.initMoney
-    this.totalInterestNow = this.scope.listOfInterest.reduce((sumInterest, num) => sumInterest + num)
+    this.totalMoney = this.scope.listOfPlayer.length * this.scope.initMoney
+    this.totalInterestNow = this.scope.listOfPlayer.map(player => player.bidToWon).reduce((sumInterest, num) => sumInterest + num)
   },
   methods: {
   }

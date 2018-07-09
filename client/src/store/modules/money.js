@@ -1,62 +1,24 @@
 import globalAxios from 'axios'
+import router from '../../router'
 
 const state = {
-  idToken: 123456789,
-  userId: 9922019223348,
-  user: {
-    name: 'Kriangkrai Prommaithong',
-    tel: '0818578334',
-    address: 'brabra',
-    listOfScope: [
-      {
-        id: 1,
-        ownerInfo: {
-          name: 'Kriangkrai'
-        },
-        totalPlayer: 20,
-        initMoney: 1000,
-        listOfInterest: [1400, 1500]
-      },
-      {
-        id: 2,
-        ownerInfo: {
-          name: 'Nutt'
-        },
-        totalPlayer: 30,
-        initMoney: 2000,
-        listOfInterest: [1400, 2200]
-      },
-      {
-        id: 3,
-        ownerInfo: {
-          name: 'Nutt'
-        },
-        totalPlayer: 30,
-        initMoney: 2000,
-        listOfInterest: [1400, 2200]
-      },
-      {
-        id: 4,
-        ownerInfo: {
-          name: 'Nutt'
-        },
-        totalPlayer: 30,
-        initMoney: 2000,
-        listOfInterest: [1400, 2200]
-      }
-    ]
-  }
+  listOfScope: []
 }
 
 const mutations = {
-  'ADD_NEW_MONEY': (state, obj) => {
-    state.user.listMoney.push(obj)
-    globalAxios.post('/users.json', state.user)
+  'ADD_WALLET': (state, payload) => {
+    state.listOfScope.push(payload)
+    globalAxios.post('.json', state)
       .then(res => console.log(res))
       .catch(error => console.log(error))
+    router.replace('/transaction/' + payload.id)
   },
-  'ADD_WALLET': (state, payload) => {
-    state.user.listOfScope.push(payload)
+  'INIT_DATA_USER': (state, payload) => {
+    state.id = payload.id
+    state.idToken = payload.idToken
+    state.userId = payload.userId
+    state.user = payload.user
+    state.listOfScope = payload.listOfScope
   }
 }
 
@@ -66,6 +28,21 @@ const actions = {
   },
   addWallet: ({ commit }, payload) => {
     commit('ADD_WALLET', payload)
+  },
+  initDataUser: ({ commit, state }) => {
+    globalAxios.get('.json')
+      .then(res => {
+        const data = res.data
+        const users = []
+        for (let key in data) {
+          const user = data[key]
+          user.id = key
+          users.push(user)
+        }
+        console.log(users)
+        commit('INIT_DATA_USER', users[0])
+      })
+      .catch(error => console.log(error))
   }
 }
 
@@ -74,7 +51,10 @@ const getters = {
     return state.user
   },
   getTransactionById: (state) => (id) => {
-    return state.user.listOfScope.filter(e => e.id === parseInt(id))
+    return state.listOfScope.filter(e => e.id === parseInt(id))
+  },
+  getListOfScope: (state) => {
+    return state.listOfScope
   }
 }
 

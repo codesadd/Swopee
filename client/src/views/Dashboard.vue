@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="columns is-multiline is-mobile">
-      <scope-of-money-app v-for="scope in dataUsers.listOfScope" :scope="scope" :key="scope.id"></scope-of-money-app>
+      <scope-of-money-app v-for="scope in listOfScope" :scope="scope" :key="scope.id"></scope-of-money-app>
       <div class="column is-3">
         <div class="card">
           <div class="card-content">
@@ -71,7 +71,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      dataUsers: 'dataUser'
+      dataUsers: 'dataUser',
+      listOfScope: 'getListOfScope'
     })
   },
   watch: {

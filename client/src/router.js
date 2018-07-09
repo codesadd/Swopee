@@ -4,6 +4,7 @@ import Money from './views/Money.vue'
 import Dashboard from '@/views/Dashboard'
 import Transaction from '@/views/Transaction'
 import NewWallet from '@/views/NewWallet'
+import AuthForm from '@/views/Login'
 
 Vue.use(Router)
 
@@ -40,7 +41,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      redirect: '/dashboard'
+      component: AuthForm
     }
   ]
 })
