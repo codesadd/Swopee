@@ -1,47 +1,47 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Money from './views/Money.vue'
-import Dashboard from '@/views/Dashboard'
-import Transaction from '@/views/Transaction'
-import NewWallet from '@/views/NewWallet'
-import AuthForm from '@/views/Login'
+import Vue from "vue";
+import Router from "vue-router";
+import Money from "./views/Money.vue";
+import Dashboard from "@/views/Dashboard";
+import Transaction from "@/views/Transaction";
+import NewWallet from "@/views/NewWallet";
+import AuthForm from "@/views/Login";
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
+  mode: "history",
   routes: [
     {
-      path: '/money',
-      name: 'money',
+      path: "/money",
+      name: "money",
       component: Money
     },
     {
-      path: '/dashboard',
-      name: 'dashboard',
+      path: "/dashboard",
+      name: "dashboard",
       component: Dashboard
     },
     {
-      path: '/new-wallet',
-      name: 'newWallet',
+      path: "/new-wallet",
+      name: "newWallet",
       component: NewWallet,
       beforeEnter: (to, from, next) => {
         if (to.params.id) {
-          next()
+          next();
         } else {
-          next('/dashboard')
+          next("/dashboard");
         }
       }
     },
     {
-      path: '/transaction/:id',
-      name: 'transaction',
+      path: "/transaction/:id",
+      name: "transaction",
       component: Transaction
     },
     {
-      path: '/',
-      name: 'home',
+      path: "/",
+      name: "home",
       component: AuthForm
     }
   ]
-})
+});

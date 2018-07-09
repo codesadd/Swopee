@@ -41,45 +41,43 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 
 export default {
-  data () {
+  data() {
     return {
-      money: '',
-      numberByMoney: '',
-      totalPlayer: '',
+      money: "",
+      numberByMoney: "",
+      totalPlayer: "",
       isLoading: true
-    }
+    };
   },
-  mounted () {
+  mounted() {
     if (this.dataUser) {
       setTimeout(() => {
-        this.isLoading = false
-      }, 2000)
+        this.isLoading = false;
+      }, 2000);
     }
   },
   computed: {
-    dataUser () {
-      return this.$store.getters.dataUser
+    dataUser() {
+      return this.$store.getters.dataUser;
     }
   },
   methods: {
     ...mapActions({
-      placeToAddPayment: 'addPayment'
+      placeToAddPayment: "addPayment"
     }),
-    addNewPayment () {
+    addNewPayment() {
       this.placeToAddPayment({
         money: this.money,
         totalPlayer: this.totalPlayer,
         numberByMoney: this.numberByMoney
-      })
+      });
     }
   }
-
-}
+};
 </script>
 
 <style>
-
 </style>

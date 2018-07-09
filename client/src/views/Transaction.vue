@@ -72,36 +72,39 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 export default {
-  data () {
+  data() {
     return {
       isEmpty: false,
       isPaginated: true,
       isPaginationSimple: false,
-      defaultSortDirection: 'asc',
+      defaultSortDirection: "asc",
       currentPage: 1,
       perPage: 10,
       totalInterestNow: null,
       totalMoney: null,
       transactionDetail: null
-    }
+    };
   },
-  mounted () {
-    this.totalMoney = this.transactionDetail.listOfPlayer.length * this.transactionDetail.initMoney
-    this.totalInterestNow = this.transactionDetail.listOfPlayer.map(player => player.bidToWon).reduce((sumInterest, num) => sumInterest + num)
+  mounted() {
+    this.totalMoney =
+      this.transactionDetail.listOfPlayer.length *
+      this.transactionDetail.initMoney;
+    this.totalInterestNow = this.transactionDetail.listOfPlayer
+      .map(player => player.bidToWon)
+      .reduce((sumInterest, num) => sumInterest + num);
   },
-  created () {
-    this.transactionDetail = this.$store.getters.getTransactionById(this.$route.params.id)[0]
+  created() {
+    this.transactionDetail = this.$store.getters.getTransactionById(
+      this.$route.params.id
+    )[0];
   },
   computed: {
-    ...mapGetters({
-
-    })
+    ...mapGetters({})
   }
-}
+};
 </script>
 
 <style>
-
 </style>

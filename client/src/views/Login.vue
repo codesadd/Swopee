@@ -10,26 +10,25 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   methods: {
     ...mapActions({
-      signUpToAuth: 'signupWithProvider',
-      redirectToDashboard: 'redirectToDashboard'
+      signUpToAuth: "signupWithProvider",
+      redirectToDashboard: "redirectToDashboard"
     })
   },
   computed: {
     ...mapGetters({
-      isLoading: 'loading'
+      isLoading: "loading"
     })
   },
-  created () {
-    this.redirectToDashboard()
+  created() {
+    this.redirectToDashboard();
   }
-}
+};
 </script>
 
 <style>
-
 </style>

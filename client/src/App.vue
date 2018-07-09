@@ -8,27 +8,27 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import Header from './views/Header.vue'
+import { mapActions } from "vuex";
+import Header from "./views/Header.vue";
 export default {
   components: {
     HeaderApp: Header
   },
   methods: {
     ...mapActions({
-      initDataUser: 'initDataUser',
-      autoLogin: 'tryAutoLogin'
+      initDataUser: "initDataUser",
+      autoLogin: "tryAutoLogin"
     })
   },
-  created () {
+  created() {
     // this.initDataUser()
-    this.autoLogin()
+    this.autoLogin();
   }
-}
+};
 </script>
 
 <style scope>
-  .spacer-50{
-    padding-top: 50px
-  }
+.spacer-50 {
+  padding-top: 50px;
+}
 </style>

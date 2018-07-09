@@ -58,29 +58,27 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from "vuex";
 export default {
   computed: {
     ...mapGetters({
-      isAuth: 'isAuth'
+      isAuth: "isAuth"
     })
   },
   methods: {
     ...mapActions({
-      logout: 'logout',
-      signUpToAuth: 'signupWithProvider'
+      logout: "logout",
+      signUpToAuth: "signupWithProvider"
     })
   }
-}
+};
 </script>
 
 <style scope>
-
-  .navbar-right{
-    padding-right: 10px
-  }
-  .navbar-left{
-    padding-left: 40px
-  }
-
+.navbar-right {
+  padding-right: 10px;
+}
+.navbar-left {
+  padding-left: 40px;
+}
 </style>
