@@ -7,7 +7,10 @@ import "firebase/auth";
 const state = {
   idToken: null,
   idUser: null,
-  user: null,
+  user: {
+    photoURL: null,
+    displayName: null
+  },
   isNewUser: null
 };
 
@@ -24,7 +27,10 @@ const mutations = {
   CLEAR_AUTH_DATA: state => {
     state.idToken = null;
     state.idUser = null;
-    state.user = null;
+    state.user = {
+      photoURL: null,
+      displayName: null
+    };
     state.isNewUser = null;
   },
   SET_AUTH_USER: (state, payload) => {
@@ -87,8 +93,8 @@ const actions = {
           dispatch("storeUser", state.user);
         }
         dispatch("setLogoutTimer", res.data.expiresIn);
-        commit("setLoading", false);
         router.replace("/dashboard");
+        commit("setLoading", false);
       })
       .catch(error => console.log(error));
   },

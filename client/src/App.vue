@@ -4,11 +4,12 @@
     <div class="container spacer-50">
       <router-view/>
     </div>
+    <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import Header from "./views/Header.vue";
 export default {
   components: {
@@ -18,6 +19,11 @@ export default {
     ...mapActions({
       initDataUser: "initDataUser",
       autoLogin: "tryAutoLogin"
+    })
+  },
+  computed: {
+    ...mapGetters({
+      isLoading: "loading"
     })
   },
   created() {

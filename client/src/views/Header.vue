@@ -5,22 +5,22 @@
         <router-link to="/">
           <a class="navbar-item navbar-left">
             <i class="fas fa-dollar-sign fa-2x"></i>
-            <strong>wopee</strong>
+            <strong>woppee</strong>
           </a>
         </router-link>
 
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <a role="button" @click="isNav = !isNav" class="navbar-burger" aria-label="menu" aria-expanded="false">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
       </div>
-      <div class="navbar-menu navbar-right">
+      <div class="navbar-menu navbar-right" :class="{'is-active': isNav}">
         <div class="navbar-end">
           <!-- navbar items -->
           <div class="navbar-item has-dropdown is-hoverable" v-show="isAuth">
             <a class="navbar-link">
-              Kriangkrai Prommaithong
+              <img class="avatar" :src="user.photoURL" :alt="user.displayName">
             </a>
             <div class="navbar-dropdown is-right">
               <router-link to="/dashboard">
@@ -60,9 +60,15 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
+  data() {
+    return {
+      isNav: false
+    };
+  },
   computed: {
     ...mapGetters({
-      isAuth: "isAuth"
+      isAuth: "isAuth",
+      user: "getUser"
     })
   },
   methods: {
@@ -70,6 +76,11 @@ export default {
       logout: "logout",
       signUpToAuth: "signupWithProvider"
     })
+  },
+  watch: {
+    isNav(newValue, oldValue) {
+      console.log(newValue, oldValue);
+    }
   }
 };
 </script>
@@ -80,5 +91,8 @@ export default {
 }
 .navbar-left {
   padding-left: 40px;
+}
+.avatar {
+  border-radius: 5px;
 }
 </style>
