@@ -15,11 +15,14 @@ const state = {
 };
 
 const getters = {
-  isAuth: state => {
+  IS_AUTH: state => {
     return state.idToken !== null;
   },
-  getUser: state => {
-    return state.user;
+  GET_URL_IMG_PROFILE: state => {
+    return state.user.picture != null ? state.user.picture.data.url : null;
+  },
+  GET_TOKEN: state => {
+    return state.id;
   }
 };
 
@@ -51,6 +54,8 @@ const actions = {
       firebase.auth().signOut();
       localStorage.clear();
       commit("CLEAR_AUTH_DATA");
+      commit("CLEAR_LIST");
+      commit("SET_ID_USER", null);
       router.replace("/");
     }, expirationTime * 1000);
   },
@@ -79,9 +84,10 @@ const actions = {
       })
       .then(res => {
         commit("SET_AUTH_USER", {
-          token: res.data.oauthAccessToken,
+          token: res.data.idToken,
           userId: res.data.localId
         });
+        commit("SET_USER", JSON.parse(res.data.rawUserInfo));
         const now = new Date();
         const expirationDate = new Date(
           now.getTime() + res.data.expiresIn * 1000
@@ -93,38 +99,32 @@ const actions = {
           dispatch("storeUser", state.user);
         }
         dispatch("setLogoutTimer", res.data.expiresIn);
+        dispatch("initDataUser", state.user.uid);
         router.replace("/dashboard");
         commit("setLoading", false);
       })
       .catch(error => console.log(error));
   },
   tryAutoLogin: ({ commit, dispatch }) => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        commit("SET_USER", user.providerData[0]);
-      }
-    });
-    const token = localStorage.getItem("token");
-    if (!token) {
+    if (!localStorage.getItem("token")) {
       return;
     }
-    const expirationDate = localStorage.getItem("expirationDate");
     const now = new Date();
-    if (now >= expirationDate) {
+    if (now >= localStorage.getItem("expirationDate")) {
       return;
     }
-    const userId = localStorage.getItem("userId");
     commit("SET_AUTH_USER", {
-      token: token,
-      userId: userId
+      token: localStorage.getItem("token"),
+      userId: localStorage.getItem("userId")
     });
-    dispatch("setOAuthProvider", token);
-    router.replace("/dashboard");
+    dispatch("setOAuthProvider", localStorage.getItem("token"));
   },
   logout: ({ commit }) => {
     firebase.auth().signOut();
     localStorage.clear();
     commit("CLEAR_AUTH_DATA");
+    commit("CLEAR_LIST");
+    commit("SET_ID_USER", null);
     router.replace("/");
   },
   storeUser({ state }, userData) {

@@ -20,7 +20,7 @@
           <!-- navbar items -->
           <div class="navbar-item has-dropdown is-hoverable" v-show="isAuth">
             <a class="navbar-link">
-              <img class="avatar" :src="user.photoURL" :alt="user.displayName">
+              <img class="avatar" :src="imgUrl">
             </a>
             <div class="navbar-dropdown is-right">
               <router-link to="/dashboard">
@@ -67,8 +67,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isAuth: "isAuth",
-      user: "getUser"
+      isAuth: "IS_AUTH",
+      imgUrl: "GET_URL_IMG_PROFILE"
     })
   },
   methods: {
