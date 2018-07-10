@@ -21,18 +21,8 @@
           <b-table-column field="first_name" label="ชื่อ" sortable>
             {{ props.row.nameOfPlayer }}
           </b-table-column>
-
           <b-table-column field="last_name" label="เบอร์ติดต่อ" sortable>
             {{ props.row.telOfPlayer }}
-          </b-table-column>
-          <b-table-column field="interest_bid" label="ดอกเบี้ยที่เปีย" sortable numeric>
-            {{ props.row.bidToWon | currency }}
-          </b-table-column>
-
-          <b-table-column field="date" label="วันที่เปีย" sortable centered>
-            <span class="tag" :class="{ isSuccess: props.row.isWon }">
-              {{ props.row.isWon ? new Date().toLocaleDateString() : text }}
-            </span>
           </b-table-column>
         </template>
         <template slot="empty">
@@ -55,64 +45,55 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 export default {
-  data () {
+  data() {
     return {
       isEmpty: false,
       isPaginated: true,
       isPaginationSimple: true,
-      defaultSortDirection: 'asc',
+      defaultSortDirection: "asc",
       currentPage: 1,
       perPage: 10,
       listOfInterest: [],
       handToPlay: null,
       name: null,
       tel: null,
-      text: 'ยังไม่ได้เปีย',
+      text: "ยังไม่ได้เปีย",
       newWallet: this.$route.params
-    }
+    };
   },
   methods: {
     ...mapActions({
-      addWallet: 'addWallet'
+      addWallet: "addWallet"
     }),
-    addListPlayer () {
+    addListPlayer() {
       for (let i = 0; i < this.handToPlay; i++) {
         this.listOfInterest.push({
           id: Math.max(Math.floor(Math.random() * 9999999999) + 1, 1),
           nameOfPlayer: this.name,
           telOfPlayer: this.tel,
-          handOfPlayer: this.handToPlay,
-          bidToWon: null,
-          dateToWon: null,
+          bidToWon: "",
+          dateToWon: "",
           isWon: false
-        })
+        });
       }
-      this.handToPlay = null
-      this.name = null
-      this.tel = null
+      this.handToPlay = null;
+      this.name = null;
+      this.tel = null;
     },
-    saveNewWallet () {
-      console.log({
-        id: this.newWallet.id,
-        initMoney: this.newWallet.initMoney,
-        dateToPay: this.newWallet.dateToPay,
-        ownerInfo: { name: this.newWallet.ownerInfo.name },
-        listOfPlayer: this.listOfInterest
-      })
+    saveNewWallet() {
       this.addWallet({
         id: this.newWallet.id,
         initMoney: this.newWallet.initMoney,
         dateToPay: this.newWallet.dateToPay,
         ownerInfo: { name: this.newWallet.ownerInfo.name },
         listOfPlayer: this.listOfInterest
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style>
-
 </style>

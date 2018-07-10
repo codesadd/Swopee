@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="columns is-multiline is-mobile">
-      <scope-of-money-app v-for="scope in dataUsers.listOfScope" :scope="scope" :key="scope.id"></scope-of-money-app>
+      <scope-of-money-app v-for="scope in listOfScope" :scope="scope" :key="scope.id"></scope-of-money-app>
       <div class="column is-3">
         <div class="card">
           <div class="card-content">
@@ -41,24 +41,24 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import ScopeOfMoney from '@/components/ScopeOfMoney.vue'
+import { mapGetters } from "vuex";
+import ScopeOfMoney from "@/components/ScopeOfMoney.vue";
 export default {
-  data () {
+  data() {
     return {
       isComponentModalActive: false,
       money: null,
       name: null,
       dateToPay: null
-    }
+    };
   },
   components: {
     ScopeOfMoneyApp: ScopeOfMoney
   },
   methods: {
-    addNewWallet () {
+    addNewWallet() {
       this.$router.push({
-        name: 'newWallet',
+        name: "newWallet",
         params: {
           id: Math.max(Math.floor(Math.random() * 9999999999) + 1, 1),
           ownerInfo: {
@@ -66,33 +66,34 @@ export default {
           },
           initMoney: this.money,
           dateToPay: this.dateToPay
-        }})
+        }
+      });
     }
   },
   computed: {
     ...mapGetters({
-      dataUsers: 'dataUser'
+      dataUsers: "dataUser",
+      listOfScope: "getListOfScope"
     })
   },
   watch: {
-    isComponentModalActive (value) {
+    isComponentModalActive() {
       if (this.isComponentModalActive) {
-        this.money = null
-        this.name = null
-        this.dateToPay = null
+        this.money = null;
+        this.name = null;
+        this.dateToPay = null;
       }
     }
   }
-}
+};
 </script>
 
 <style scope>
-  .card{
-    height: 150px !important;
-    border-radius: 5px;
-  }
-  .spacer-33{
-    margin-top: 33px
-  }
-
+.card {
+  height: 150px !important;
+  border-radius: 5px;
+}
+.spacer-33 {
+  margin-top: 33px;
+}
 </style>

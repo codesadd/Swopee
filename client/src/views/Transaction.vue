@@ -16,7 +16,7 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="is-large">คนเล่นทั้งหมด</p>
-          <p class="title">{{ transactionDetail.totalPlayer }}</p>
+          <p class="title">{{ transactionDetail.listOfPlayer.length }}</p>
         </div>
       </div>
     </nav>
@@ -24,7 +24,7 @@
     <br>
     <hr class="navbar-divider">
     <b-table
-            :data="isEmpty ? [] : transactionDetail.listOfInterest"
+            :data="isEmpty ? [] : transactionDetail.listOfPlayer"
             :striped="true"
             :hoverable="true"
             :loading="false"
@@ -38,19 +38,19 @@
 
             <template slot-scope="props">
                 <b-table-column field="first_name" label="ชื่อ" sortable>
-                  เกรียงไกร พรหมไหมทอง
+                  {{ props.row.nameOfPlayer }}
                 </b-table-column>
 
                 <b-table-column field="last_name" label="เบอร์ติดต่อ" sortable>
-                  081-857-8334
+                  {{ props.row.telOfPlayer }}
                 </b-table-column>
                 <b-table-column field="interest_bid" label="ดอกเบี้ยที่เปีย" sortable numeric>
-                  {{ props.row | currency }}
+                  {{ props.row.bidToWon | currency }}
                 </b-table-column>
 
                 <b-table-column field="date" label="วันที่เปีย" sortable centered>
-                  <span class="tag is-success">
-                    {{ new Date('2018/10/15').toLocaleDateString() }}
+                  <span class="tag" :class="{ 'is-success' : props.row.isWon , 'is-warning': !props.row.isWon }">
+                    {{ props.row.isWon ? new Date(props.row.dateToWon).toLocaleDateString() : 'ยังไม่ได้เปีย' }}
                   </span>
                 </b-table-column>
             </template>
@@ -72,36 +72,39 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 export default {
-  data () {
+  data() {
     return {
       isEmpty: false,
       isPaginated: true,
-      isPaginationSimple: true,
-      defaultSortDirection: 'asc',
+      isPaginationSimple: false,
+      defaultSortDirection: "asc",
       currentPage: 1,
       perPage: 10,
       totalInterestNow: null,
       totalMoney: null,
       transactionDetail: null
-    }
+    };
   },
-  mounted () {
-    this.totalMoney = this.transactionDetail.totalPlayer * this.transactionDetail.initMoney
-    this.totalInterestNow = this.transactionDetail.listOfInterest.reduce((sumInterest, num) => sumInterest + num)
+  mounted() {
+    this.totalMoney =
+      this.transactionDetail.listOfPlayer.length *
+      this.transactionDetail.initMoney;
+    this.totalInterestNow = this.transactionDetail.listOfPlayer
+      .map(player => player.bidToWon)
+      .reduce((sumInterest, num) => sumInterest + num);
   },
-  created () {
-    this.transactionDetail = this.$store.getters.getTransactionById(this.$route.params.id)[0]
+  created() {
+    this.transactionDetail = this.$store.getters.getTransactionById(
+      this.$route.params.id
+    )[0];
   },
   computed: {
-    ...mapGetters({
-
-    })
+    ...mapGetters({})
   }
-}
+};
 </script>
 
 <style>
-
 </style>
