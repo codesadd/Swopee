@@ -5,7 +5,7 @@
         <router-link to="/">
           <a class="navbar-item navbar-left">
             <i class="fas fa-dollar-sign fa-2x"></i>
-            <strong>woppee</strong>
+            <strong>wopper</strong>
           </a>
         </router-link>
 
@@ -58,31 +58,31 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
       isNav: false
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      isAuth: "IS_AUTH",
-      imgUrl: "GET_URL_IMG_PROFILE"
+      isAuth: 'IS_AUTH',
+      imgUrl: 'GET_URL_IMG_PROFILE'
     })
   },
   methods: {
     ...mapActions({
-      logout: "logout",
-      signUpToAuth: "signupWithProvider"
+      logout: 'logout',
+      signUpToAuth: 'signupWithProvider'
     })
   },
   watch: {
-    isNav(newValue, oldValue) {
-      console.log(newValue, oldValue);
+    isNav (newValue, oldValue) {
+      console.log(newValue, oldValue)
     }
   }
-};
+}
 </script>
 
 <style scope>

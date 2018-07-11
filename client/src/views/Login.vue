@@ -9,19 +9,19 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex'
 
 export default {
   methods: {
     ...mapActions({
-      signUpToAuth: "signupWithProvider",
-      redirectToDashboard: "redirectToDashboard"
+      signUpToAuth: 'signupWithProvider',
+      redirectToDashboard: 'redirectToDashboard'
     })
   },
-  created() {
-    this.redirectToDashboard();
+  created () {
+    this.redirectToDashboard()
   }
-};
+}
 </script>
 
 <style>

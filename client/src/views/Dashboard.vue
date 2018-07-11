@@ -41,24 +41,24 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import ScopeOfMoney from "@/components/ScopeOfMoney.vue";
+import { mapGetters } from 'vuex'
+import ScopeOfMoney from '@/components/ScopeOfMoney.vue'
 export default {
-  data() {
+  data () {
     return {
       isComponentModalActive: false,
       money: null,
       name: null,
       dateToPay: null
-    };
+    }
   },
   components: {
     ScopeOfMoneyApp: ScopeOfMoney
   },
   methods: {
-    addNewWallet() {
+    addNewWallet () {
       this.$router.push({
-        name: "newWallet",
+        name: 'newWallet',
         params: {
           id: Math.max(Math.floor(Math.random() * 9999999999) + 1, 1),
           ownerInfo: {
@@ -67,25 +67,25 @@ export default {
           initMoney: this.money,
           dateToPay: this.dateToPay
         }
-      });
+      })
     }
   },
   computed: {
     ...mapGetters({
-      dataUsers: "dataUser",
-      listOfScope: "getListOfScope"
+      dataUsers: 'dataUser',
+      listOfScope: 'getListOfScope'
     })
   },
   watch: {
-    isComponentModalActive() {
+    isComponentModalActive () {
       if (this.isComponentModalActive) {
-        this.money = null;
-        this.name = null;
-        this.dateToPay = null;
+        this.money = null
+        this.name = null
+        this.dateToPay = null
       }
     }
   }
-};
+}
 </script>
 
 <style scope>

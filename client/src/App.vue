@@ -9,28 +9,28 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import Header from "./views/Header.vue";
+import { mapActions, mapGetters } from 'vuex'
+import Header from './views/Header.vue'
 export default {
   components: {
     HeaderApp: Header
   },
   methods: {
     ...mapActions({
-      initDataUser: "initDataUser",
-      autoLogin: "tryAutoLogin"
+      initDataUser: 'initDataUser',
+      autoLogin: 'tryAutoLogin'
     })
   },
   computed: {
     ...mapGetters({
-      isLoading: "loading"
+      isLoading: 'loading'
     })
   },
-  created() {
+  created () {
     // this.initDataUser()
-    this.autoLogin();
+    this.autoLogin()
   }
-};
+}
 </script>
 
 <style scope>

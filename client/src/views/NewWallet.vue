@@ -45,54 +45,54 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
       isEmpty: false,
       isPaginated: true,
       isPaginationSimple: true,
-      defaultSortDirection: "asc",
+      defaultSortDirection: 'asc',
       currentPage: 1,
       perPage: 10,
       listOfInterest: [],
       handToPlay: null,
       name: null,
       tel: null,
-      text: "ยังไม่ได้เปีย",
+      text: 'ยังไม่ได้เปีย',
       newWallet: this.$route.params
-    };
+    }
   },
   methods: {
     ...mapActions({
-      addWallet: "addWallet"
+      addWallet: 'addWallet'
     }),
-    addListPlayer() {
+    addListPlayer () {
       for (let i = 0; i < this.handToPlay; i++) {
         this.listOfInterest.push({
           id: Math.max(Math.floor(Math.random() * 9999999999) + 1, 1),
           nameOfPlayer: this.name,
           telOfPlayer: this.tel,
-          bidToWon: "",
-          dateToWon: "",
+          bidToWon: '',
+          dateToWon: '',
           isWon: false
-        });
+        })
       }
-      this.handToPlay = null;
-      this.name = null;
-      this.tel = null;
+      this.handToPlay = null
+      this.name = null
+      this.tel = null
     },
-    saveNewWallet() {
+    saveNewWallet () {
       this.addWallet({
         id: this.newWallet.id,
         initMoney: this.newWallet.initMoney,
         dateToPay: this.newWallet.dateToPay,
         ownerInfo: { name: this.newWallet.ownerInfo.name },
         listOfPlayer: this.listOfInterest
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style>
