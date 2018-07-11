@@ -8,11 +8,12 @@ const state = {
 }
 
 const mutations = {
-  ADD_WALLET: (state, payload) => {
-    state.listOfScope.push(payload)
+  SET_WALLET: (state, payload) => {
     globalAxios
-      .put('users/' + state.id + '.json' + '?auth=' + auth.state.idToken, state)
-      .then(res => console.log(res))
+      .put('users/' + state.id + '/listOfScope.json' + '?auth=' + auth.state.idToken, state.listOfScope)
+      .then(res => {
+        state.listOfScope.push(payload)
+      })
       .catch(error => console.log(error))
     router.replace('/transaction/' + payload.id)
   },
@@ -28,11 +29,8 @@ const mutations = {
 }
 
 const actions = {
-  addPayment: ({ commit }, obj) => {
-    commit('ADD_NEW_MONEY', obj)
-  },
-  addWallet: ({ commit }, payload) => {
-    commit('ADD_WALLET', payload)
+  Add_WALLET: ({ commit }, payload) => {
+    commit('SET_WALLET', payload)
   },
   initDataUser: ({ commit }, payload) => {
     globalAxios
@@ -40,9 +38,11 @@ const actions = {
       .then(res => {
         for (let key in res.data) {
           const user = res.data[key]
-          if (payload === user.uid && (user.listOfScope !== undefined && user.listOfScope.length > 0)) {
+          if (payload === user.id) {
             commit('SET_ID_USER', key)
-            commit('INIT_DATA_USER', user.listOfScope)
+            if (user.listOfScope !== undefined && user.listOfScope.length > 0) {
+              commit('INIT_DATA_USER', user.listOfScope)
+            }
           }
         }
       })
@@ -51,7 +51,7 @@ const actions = {
 }
 
 const getters = {
-  dataUser () {
+  dataUser: state => {
     return state.user
   },
   getTransactionById: state => id => {

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Buefy from 'buefy'
-import 'buefy/lib/buefy.css'
+import 'buefy/lib/buefy.min.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -10,9 +10,6 @@ import axios from 'axios'
 import VueCurrencyFilter from 'vue-currency-filter'
 
 Vue.config.productionTip = false
-Vue.config.devtools = false
-Vue.config.debug = false
-Vue.config.silent = true
 
 Vue.use(Buefy, VueCurrencyFilter)
 Vue.use(VueCurrencyFilter, {

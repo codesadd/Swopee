@@ -31,7 +31,7 @@
             </b-field>
           </section>
           <footer class="modal-card-foot">
-            <button class="button" type="button" @click="isComponentModalActive = false">Close</button>
+            <button class="button is-danger" type="button" @click="isComponentModalActive = false">ยกเลิก</button>
               <a class="button is-primary" @click="addNewWallet">เพิ่ม</a>
           </footer>
         </div>

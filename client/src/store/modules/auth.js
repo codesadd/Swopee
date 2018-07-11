@@ -99,7 +99,7 @@ const actions = {
           dispatch('storeUser', state.user)
         }
         dispatch('setLogoutTimer', res.data.expiresIn)
-        dispatch('initDataUser', state.user.uid)
+        dispatch('initDataUser', state.user.id)
         router.replace('/dashboard')
         commit('setLoading', false)
       })

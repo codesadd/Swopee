@@ -34,24 +34,28 @@
             :current-page.sync="currentPage"
             :pagination-simple="isPaginationSimple"
             :default-sort-direction="defaultSortDirection"
-            default-sort="user.first_name">
+            default-sort="nameOfPlayer">
 
             <template slot-scope="props">
-                <b-table-column field="first_name" label="ชื่อ" sortable>
+                <b-table-column field="nameOfPlayer" label="ชื่อ" sortable>
                   {{ props.row.nameOfPlayer }}
                 </b-table-column>
 
-                <b-table-column field="last_name" label="เบอร์ติดต่อ" sortable>
+                <b-table-column field="telOfPlayer" label="เบอร์ติดต่อ" sortable>
                   {{ props.row.telOfPlayer }}
                 </b-table-column>
-                <b-table-column field="interest_bid" label="ดอกเบี้ยที่เปีย" sortable numeric>
+                <b-table-column field="bidToWon" label="ดอกเบี้ยที่เปีย" sortable numeric>
                   {{ props.row.bidToWon | currency }}
                 </b-table-column>
 
-                <b-table-column field="date" label="วันที่เปีย" sortable centered>
+                <b-table-column field="date" label="วันที่เปีย" centered>
                   <span class="tag" :class="{ 'is-success' : props.row.isWon , 'is-warning': !props.row.isWon }">
                     {{ props.row.isWon ? new Date(props.row.dateToWon).toLocaleDateString() : 'ยังไม่ได้เปีย' }}
                   </span>
+                </b-table-column>
+
+                <b-table-column field="action" label="แก้ไข" centered>
+                  <a class="button is-primary is-rounded" @click="isBid = true">ใส่ดอกที่เปีย</a>
                 </b-table-column>
             </template>
             <template slot="empty">
@@ -68,11 +72,29 @@
                 </section>
             </template>
         </b-table>
+        <b-modal :active.sync="isBid" has-modal-card>
+      <form name="addNewWallet">
+        <div class="modal-card" style="width: auto">
+          <header class="modal-card-head">
+            <p class="modal-card-title">เปียแชร์</p>
+          </header>
+          <section class="modal-card-body">
+            <b-field grouped>
+              <b-input type="number" v-model="bidMoney" placeholder="ดอกที่เปีย" required>
+              </b-input>
+            </b-field>
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-danger" type="button" @click="isBid = false">ยกเลิก</button>
+              <a class="button is-success">เพิ่ม</a>
+          </footer>
+        </div>
+      </form>
+    </b-modal>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -84,7 +106,9 @@ export default {
       perPage: 10,
       totalInterestNow: null,
       totalMoney: null,
-      transactionDetail: null
+      transactionDetail: null,
+      bidMoney: null,
+      isBid: false
     }
   },
   mounted () {
@@ -100,8 +124,12 @@ export default {
       this.$route.params.id
     )[0]
   },
-  computed: {
-    ...mapGetters({})
+  watch: {
+    isBid () {
+      if (this.isBid) {
+        this.bidMoney = null
+      }
+    }
   }
 }
 </script>

@@ -1,40 +1,39 @@
 <template>
   <div id="app">
-    <header-app></header-app>
-    <div class="container spacer-50">
-      <router-view/>
-    </div>
-    <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
+    <main-view/>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import Header from './views/Header.vue'
+import MainView from './vueneue/MainView';
+
 export default {
   components: {
-    HeaderApp: Header
+    MainView,
   },
-  methods: {
-    ...mapActions({
-      initDataUser: 'initDataUser',
-      autoLogin: 'tryAutoLogin'
-    })
+  head: {
+    titleTemplate(title) {
+      if (title) return `${title} | VueNeue`;
+      return 'VueNeue';
+    },
+    htmlAttrs: {
+      lang: 'en',
+    },
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+    ],
   },
-  computed: {
-    ...mapGetters({
-      isLoading: 'loading'
-    })
-  },
-  created () {
-    // this.initDataUser()
-    this.autoLogin()
-  }
-}
+};
 </script>
 
-<style scope>
-.spacer-50 {
-  padding-top: 50px;
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
 </style>
