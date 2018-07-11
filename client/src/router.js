@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import Router from 'vue-router'
 import Money from './views/Money.vue'
 import Dashboard from '@/views/Dashboard'
@@ -5,6 +6,8 @@ import Transaction from '@/views/Transaction'
 import NewWallet from '@/views/NewWallet'
 import AuthForm from '@/views/Login'
 import auth from './store/modules/auth'
+
+Vue.use(Router)
 
 let router = new Router({
   mode: 'history',
