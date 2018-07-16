@@ -49,7 +49,7 @@ const mutations = {
 }
 
 const actions = {
-  setLogoutTimer: ({ commit }, expirationTime) => {
+  LOGOUT_WITH_TIMER: ({ commit }, expirationTime) => {
     setTimeout(() => {
       firebase.auth().signOut()
       localStorage.clear()
@@ -59,21 +59,19 @@ const actions = {
       router.replace('/')
     }, expirationTime * 1000)
   },
-  signupWithProvider: ({ commit, dispatch }) => {
+  LOGIN: ({ commit, dispatch }) => {
     commit('setLoading', true)
-    firebase
-      .auth()
-      .signInWithPopup(new firebase.auth.FacebookAuthProvider())
+    firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider())
       .then(firebaseUser => {
         commit('IS_NEW_USER', firebaseUser.additionalUserInfo.isNewUser)
         commit('SET_USER', firebaseUser.additionalUserInfo.profile)
-        dispatch('setOAuthProvider', firebaseUser.credential.accessToken)
+        dispatch('INIT_OAUTH', firebaseUser.credential.accessToken)
       })
       .catch(error => {
         console.log(error.message)
       })
   },
-  setOAuthProvider: ({ commit, dispatch }, authData) => {
+  INIT_OAUTH: ({ commit, dispatch }, authData) => {
     commit('setLoading', true)
     axios
       .post('/verifyAssertion?key=AIzaSyCyFiSH0p6k-Rd6XUfCBP7nnYvRTitwrsQ', {
@@ -96,16 +94,16 @@ const actions = {
         localStorage.setItem('userId', res.data.localId)
         localStorage.setItem('expirationDate', expirationDate)
         if (state.isNewUser) {
-          dispatch('storeUser', state.user)
+          dispatch('STORE_USER', state.user)
         }
-        dispatch('setLogoutTimer', res.data.expiresIn)
-        dispatch('initDataUser', state.user.id)
+        dispatch('LOGOUT_WITH_TIMER', res.data.expiresIn)
+        dispatch('INIT_DATA_USER', state.user.id)
         router.replace('/dashboard')
         commit('setLoading', false)
       })
       .catch(error => console.log(error))
   },
-  tryAutoLogin: ({ commit, dispatch }) => {
+  AUTO_LOGIN: ({ commit, dispatch }) => {
     if (!localStorage.getItem('token')) {
       return
     }
@@ -117,9 +115,9 @@ const actions = {
       token: localStorage.getItem('token'),
       userId: localStorage.getItem('userId')
     })
-    dispatch('setOAuthProvider', localStorage.getItem('token'))
+    dispatch('INIT_OAUTH', localStorage.getItem('token'))
   },
-  logout: ({ commit }) => {
+  LOGOUT: ({ commit }) => {
     firebase.auth().signOut()
     localStorage.clear()
     commit('CLEAR_AUTH_DATA')
@@ -127,7 +125,7 @@ const actions = {
     commit('SET_ID_USER', null)
     router.replace('/')
   },
-  storeUser ({ state }, userData) {
+  STORE_USER ({ state }, userData) {
     if (!state.idToken) {
       return
     }

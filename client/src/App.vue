@@ -10,15 +10,14 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import Header from './views/Header.vue'
+import Header from '@/views/Header.vue'
 export default {
   components: {
     HeaderApp: Header
   },
   methods: {
     ...mapActions({
-      initDataUser: 'initDataUser',
-      autoLogin: 'tryAutoLogin'
+      autoLogin: 'AUTO_LOGIN'
     })
   },
   computed: {
@@ -27,7 +26,6 @@ export default {
     })
   },
   created () {
-    // this.initDataUser()
     this.autoLogin()
   }
 }

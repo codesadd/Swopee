@@ -55,6 +55,7 @@ export default {
       defaultSortDirection: 'asc',
       currentPage: 1,
       perPage: 10,
+      listOfPlayer: {},
       listOfInterest: [],
       handToPlay: null,
       name: null,
@@ -65,12 +66,19 @@ export default {
   },
   methods: {
     ...mapActions({
-      addWallet: 'addWallet'
+      addWallet: 'Add_WALLET'
     }),
     addListPlayer () {
       for (let i = 0; i < this.handToPlay; i++) {
+        let id = Math.max(Math.floor(Math.random() * 9999999999) + 1, 1)
+        this.listOfPlayer[id] = {
+          nameOfPlayer: this.name,
+          telOfPlayer: this.tel,
+          bidToWon: '',
+          dateToWon: '',
+          isWon: false
+        }
         this.listOfInterest.push({
-          id: Math.max(Math.floor(Math.random() * 9999999999) + 1, 1),
           nameOfPlayer: this.name,
           telOfPlayer: this.tel,
           bidToWon: '',
@@ -85,10 +93,12 @@ export default {
     saveNewWallet () {
       this.addWallet({
         id: this.newWallet.id,
-        initMoney: this.newWallet.initMoney,
-        dateToPay: this.newWallet.dateToPay,
-        ownerInfo: { name: this.newWallet.ownerInfo.name },
-        listOfPlayer: this.listOfInterest
+        data: {
+          initMoney: this.newWallet.initMoney,
+          dateToPay: this.newWallet.dateToPay,
+          ownerInfo: { name: this.newWallet.ownerInfo.name },
+          listOfPlayer: this.listOfPlayer
+        }
       })
     }
   }

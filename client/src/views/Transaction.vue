@@ -23,60 +23,49 @@
     <br>
     <br>
     <hr class="navbar-divider">
-    <b-table
-            :data="isEmpty ? [] : transactionDetail.listOfPlayer"
-            :striped="true"
-            :hoverable="true"
-            :loading="false"
-            :mobile-cards="true"
-            :paginated="isPaginated"
-            :per-page="perPage"
-            :current-page.sync="currentPage"
-            :pagination-simple="isPaginationSimple"
-            :default-sort-direction="defaultSortDirection"
-            default-sort="nameOfPlayer">
+    <b-table :data="isEmpty ? [] : transactionDetail.listOfPlayer" :striped="true" :hoverable="true" :loading="false" :mobile-cards="true"
+      :paginated="isPaginated" :per-page="perPage" :current-page.sync="currentPage" :pagination-simple="isPaginationSimple"
+      :default-sort-direction="defaultSortDirection" default-sort="nameOfPlayer">
 
-            <template slot-scope="props">
-                <b-table-column field="nameOfPlayer" label="ชื่อ" sortable>
-                  {{ props.row.nameOfPlayer }}
-                </b-table-column>
+      <template slot-scope="props">
+        <b-table-column field="nameOfPlayer" label="ชื่อ" sortable>
+          {{ props.row.nameOfPlayer }}
+        </b-table-column>
 
-                <b-table-column field="telOfPlayer" label="เบอร์ติดต่อ" sortable>
-                  {{ props.row.telOfPlayer }}
-                </b-table-column>
-                <b-table-column field="bidToWon" label="ดอกเบี้ยที่เปีย" sortable numeric>
-                  {{ props.row.bidToWon | currency }}
-                </b-table-column>
+        <b-table-column field="telOfPlayer" label="เบอร์ติดต่อ" sortable>
+          {{ props.row.telOfPlayer }}
+        </b-table-column>
+        <b-table-column field="bidToWon" label="ดอกเบี้ยที่เปีย" sortable numeric>
+          {{ props.row.bidToWon | currency }}
+        </b-table-column>
 
-                <b-table-column field="date" label="วันที่เปีย" centered>
-                  <span class="tag" :class="{ 'is-success' : props.row.isWon , 'is-warning': !props.row.isWon }">
-                    {{ props.row.isWon ? new Date(props.row.dateToWon).toLocaleDateString() : 'ยังไม่ได้เปีย' }}
-                  </span>
-                </b-table-column>
+        <b-table-column field="date" label="วันที่เปีย" centered>
+          <span class="tag" :class="{ 'is-success' : props.row.isWon , 'is-warning': !props.row.isWon }">
+            {{ props.row.isWon ? new Date(props.row.dateToWon).toLocaleDateString() : 'ยังไม่ได้เปีย' }}
+          </span>
+        </b-table-column>
 
-                <b-table-column field="action" label="แก้ไข" centered>
-                  <a class="button is-primary is-rounded" @click="isBid = true">ใส่ดอกที่เปีย</a>
-                </b-table-column>
-            </template>
-            <template slot="empty">
-                <section class="section">
-                    <div class="content has-text-grey has-text-centered">
-                        <p>
-                            <b-icon
-                                icon="emoticon-sad"
-                                size="is-large">
-                            </b-icon>
-                        </p>
-                        <p>Nothing here.</p>
-                    </div>
-                </section>
-            </template>
-        </b-table>
-        <b-modal :active.sync="isBid" has-modal-card>
+        <b-table-column field="action" label="แก้ไข" centered>
+          <a class="button is-primary is-rounded" @click="selected = props.row">ใส่ดอกที่เปีย</a>
+        </b-table-column>
+      </template>
+      <template slot="empty">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p>
+              <b-icon icon="emoticon-sad" size="is-large">
+              </b-icon>
+            </p>
+            <p>Nothing here.</p>
+          </div>
+        </section>
+      </template>
+    </b-table>
+    <b-modal :active.sync="isBid" has-modal-card>
       <form name="addNewWallet">
         <div class="modal-card" style="width: auto">
           <header class="modal-card-head">
-            <p class="modal-card-title">เปียแชร์</p>
+            <p class="modal-card-title">{{ selected ? selected.nameOfPlayer : null }}เปียแชร์</p>
           </header>
           <section class="modal-card-body">
             <b-field grouped>
@@ -86,7 +75,7 @@
           </section>
           <footer class="modal-card-foot">
             <button class="button is-danger" type="button" @click="isBid = false">ยกเลิก</button>
-              <a class="button is-success">เพิ่ม</a>
+            <a class="button is-success" @click="bidWon">เพิ่ม</a>
           </footer>
         </div>
       </form>
@@ -108,13 +97,12 @@ export default {
       totalMoney: null,
       transactionDetail: null,
       bidMoney: null,
-      isBid: false
+      isBid: false,
+      selected: null
     }
   },
   mounted () {
-    this.totalMoney =
-      this.transactionDetail.listOfPlayer.length *
-      this.transactionDetail.initMoney
+    this.totalMoney = this.transactionDetail.listOfPlayer.length * this.transactionDetail.initMoney
     this.totalInterestNow = this.transactionDetail.listOfPlayer
       .map(player => player.bidToWon)
       .reduce((sumInterest, num) => sumInterest + num)
@@ -129,6 +117,17 @@ export default {
       if (this.isBid) {
         this.bidMoney = null
       }
+    },
+    selected () {
+      this.isBid = true
+      console.log(this.selected)
+    }
+  },
+  methods: {
+    bidWon () {
+      this.selected.bidToWon = this.bidMoney
+      this.selected.dateToWon = new Date().toLocaleDateString()
+      this.isBid = true
     }
   }
 }

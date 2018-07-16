@@ -73,8 +73,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      logout: 'logout',
-      signUpToAuth: 'signupWithProvider'
+      logout: 'LOGOUT',
+      signUpToAuth: 'LOGIN'
     })
   },
   watch: {
