@@ -9,6 +9,9 @@ const state = {
 }
 
 const mutations = {
+  SET_LIST_OF_SCOPE: (state, payload) => {
+    state.listOfScope = payload
+  },
   SET_WALLET: (state, payload) => {
     globalAxios
       .put('users/' + state.id + '/listOfScope/' + payload.id + '.json?auth=' + auth.state.idToken, payload.data)
@@ -46,17 +49,23 @@ const actions = {
         }
       })
       .catch(error => console.log(error))
+  },
+  ADD_BID_TRANSACTION: ({commit, state}, payload) => {
+    globalAxios
+      .put('users/' + state.id + '/listOfScope/' + payload.id + '/listOfPlayer/' + payload.selected.row.id + '.json?auth=' + auth.state.idToken, payload.selected.row)
+      .then(res => {
+        commit('SET_LIST_OF_SCOPE', state.listOfScope)
+        console.log(state.listOfScope)
+      })
+      .catch(error => console.log(error))
   }
 }
 
 const getters = {
-  dataUser: state => {
-    return state.user
-  },
-  getTransactionById: state => id => {
+  GET_TRANSACTION: state => id => {
     return state.listOfScope.filter(e => e.id === id)
   },
-  getListOfScope: state => {
+  GET_LIST_OF_SCOPE: state => {
     return state.listOfScope
   }
 }

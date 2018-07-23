@@ -31,7 +31,11 @@ export default {
 }
 </script>
 
-<style scope>
+<style>
+/* @import url("https://dank.sh/static/dmvendor.css");
+body, button, input, select, textarea{
+  font-family: dm
+} */
 .spacer-50 {
   padding-top: 50px;
 }

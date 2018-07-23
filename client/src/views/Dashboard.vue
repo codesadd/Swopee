@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="columns is-multiline is-mobile">
+    <div class="columns is-multiline is-gapless">
       <scope-of-money-app v-for="scope in listOfScope" :scope="scope" :key="scope.id"></scope-of-money-app>
       <div class="column is-3">
         <div class="card">
@@ -72,8 +72,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      dataUsers: 'dataUser',
-      listOfScope: 'getListOfScope'
+      listOfScope: 'GET_LIST_OF_SCOPE'
     })
   },
   watch: {
@@ -92,6 +91,7 @@ export default {
 .card {
   height: 150px !important;
   border-radius: 5px;
+  margin: 10px
 }
 .spacer-33 {
   margin-top: 33px;

@@ -24,7 +24,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.scope)
     this.totalMoney = this.scope.listOfPlayer.length * this.scope.initMoney
     this.totalInterestNow = this.scope.listOfPlayer
       .map(player => player.bidToWon)

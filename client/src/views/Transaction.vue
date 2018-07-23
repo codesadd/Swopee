@@ -21,6 +21,7 @@
       </div>
     </nav>
     <br>
+    {{ bidMoney }}
     <br>
     <hr class="navbar-divider">
     <b-table :data="isEmpty ? [] : transactionDetail.listOfPlayer" :striped="true" :hoverable="true" :loading="false" :mobile-cards="true"
@@ -46,7 +47,8 @@
         </b-table-column>
 
         <b-table-column field="action" label="แก้ไข" centered>
-          <a class="button is-primary is-rounded" @click="selected = props.row">ใส่ดอกที่เปีย</a>
+          <a class="button is-primary is-rounded" v-if="!props.row.isWon" @click="addBid(props)">ใส่ดอกที่เปีย</a>
+          <a class="button is-info is-rounded" v-if="props.row.isWon" @click="editBid(props)">แก้ไขดอกที่เปีย</a>
         </b-table-column>
       </template>
       <template slot="empty">
@@ -69,8 +71,7 @@
           </header>
           <section class="modal-card-body">
             <b-field grouped>
-              <b-input type="number" v-model="bidMoney" placeholder="ดอกที่เปีย" required>
-              </b-input>
+              <cleave class="input" v-model="bidMoney" :options="options" placeholder="ดอกที่เปีย" required></cleave>
             </b-field>
           </section>
           <footer class="modal-card-foot">
@@ -84,7 +85,12 @@
 </template>
 
 <script>
+import cleave from 'vue-cleave-component'
+import { mapActions } from 'vuex'
 export default {
+  components: {
+    cleave
+  },
   data () {
     return {
       isEmpty: false,
@@ -98,35 +104,51 @@ export default {
       transactionDetail: null,
       bidMoney: null,
       isBid: false,
-      selected: null
+      selected: null,
+      options: {
+        numeral: true
+      }
     }
   },
   mounted () {
     this.totalMoney = this.transactionDetail.listOfPlayer.length * this.transactionDetail.initMoney
-    this.totalInterestNow = this.transactionDetail.listOfPlayer
-      .map(player => player.bidToWon)
-      .reduce((sumInterest, num) => sumInterest + num)
+    this.calTotalInterest()
   },
   created () {
-    this.transactionDetail = this.$store.getters.getTransactionById(
+    this.transactionDetail = this.$store.getters.GET_TRANSACTION(
       this.$route.params.id
     )[0]
   },
   watch: {
-    isBid () {
-      if (this.isBid) {
-        this.bidMoney = null
-      }
-    },
-    selected () {
-      this.isBid = true
-      console.log(this.selected)
-    }
   },
   methods: {
+    ...mapActions({
+      addBidToStore: 'ADD_BID_TRANSACTION'
+    }),
     bidWon () {
-      this.selected.bidToWon = this.bidMoney
-      this.selected.dateToWon = new Date().toLocaleDateString()
+      this.selected.row.bidToWon = parseInt(this.bidMoney)
+      this.selected.row.dateToWon = new Date().toLocaleDateString()
+      this.selected.row.isWon = true
+      this.calTotalInterest()
+      this.addBidToStore({
+        id: this.transactionDetail.id,
+        selected: this.selected
+      })
+      this.isBid = false
+    },
+    calTotalInterest () {
+      this.totalInterestNow = this.transactionDetail.listOfPlayer
+        .map(player => player.bidToWon)
+        .reduce((sumInterest, num) => sumInterest + num)
+    },
+    addBid (selected) {
+      this.bidMoney = null
+      this.isBid = true
+      this.selected = selected
+    },
+    editBid (selected) {
+      this.selected = selected
+      this.bidMoney = this.selected.bidToWon
       this.isBid = true
     }
   }
