@@ -59,49 +59,53 @@ const actions = {
       router.replace('/')
     }, expirationTime * 1000)
   },
-  LOGIN: ({ commit, dispatch }) => {
+  LOGIN: async ({ commit, dispatch }) => {
     commit('setLoading', true)
-    firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider())
-      .then(firebaseUser => {
-        commit('IS_NEW_USER', firebaseUser.additionalUserInfo.isNewUser)
-        commit('SET_USER', firebaseUser.additionalUserInfo.profile)
-        dispatch('INIT_OAUTH', firebaseUser.credential.accessToken)
-      })
-      .catch(error => {
-        console.log(error.message)
-      })
+    let firebaseUser = null
+    try {
+      firebaseUser = await firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider())
+      commit('IS_NEW_USER', firebaseUser.additionalUserInfo.isNewUser)
+      commit('SET_USER', firebaseUser.additionalUserInfo.profile)
+      dispatch('INIT_OAUTH', firebaseUser.credential.accessToken)
+    } catch (e) {
+      console.log(e)
+      if (!firebaseUser) {
+        commit('setError', {message: 'Sign In Error' + e})
+      }
+    }
   },
-  INIT_OAUTH: ({ commit, dispatch }, authData) => {
+  INIT_OAUTH: async ({ commit, dispatch }, authData) => {
     commit('setLoading', true)
-    axios
-      .post('/verifyAssertion?key=AIzaSyCyFiSH0p6k-Rd6XUfCBP7nnYvRTitwrsQ', {
+    let res = null
+    try {
+      res = await axios.post('/verifyAssertion?key=AIzaSyCyFiSH0p6k-Rd6XUfCBP7nnYvRTitwrsQ', {
         postBody: 'access_token=' + authData + '&providerId=facebook.com',
         returnIdpCredential: true,
         requestUri: 'http://localhost:8080',
         returnSecureToken: true
       })
-      .then(res => {
-        commit('SET_AUTH_USER', {
-          token: res.data.idToken,
-          userId: res.data.localId
-        })
-        commit('SET_USER', JSON.parse(res.data.rawUserInfo))
-        const now = new Date()
-        const expirationDate = new Date(
-          now.getTime() + res.data.expiresIn * 1000
-        )
-        localStorage.setItem('token', res.data.oauthAccessToken)
-        localStorage.setItem('userId', res.data.localId)
-        localStorage.setItem('expirationDate', expirationDate)
-        if (state.isNewUser) {
-          dispatch('STORE_USER', state.user)
-        }
-        dispatch('LOGOUT_WITH_TIMER', res.data.expiresIn)
-        dispatch('INIT_DATA_USER', state.user.id)
-        router.replace('/dashboard')
-        commit('setLoading', false)
+      commit('SET_AUTH_USER', {
+        token: res.data.idToken,
+        userId: res.data.localId
       })
-      .catch(error => console.log(error))
+      commit('SET_USER', JSON.parse(res.data.rawUserInfo))
+      const now = new Date()
+      const expirationDate = new Date(
+        now.getTime() + res.data.expiresIn * 1000
+      )
+      localStorage.setItem('token', res.data.oauthAccessToken)
+      localStorage.setItem('userId', res.data.localId)
+      localStorage.setItem('expirationDate', expirationDate)
+      if (state.isNewUser) {
+        dispatch('STORE_USER', state.user)
+      }
+      dispatch('LOGOUT_WITH_TIMER', res.data.expiresIn)
+      dispatch('INIT_DATA_USER', state.user.id)
+      router.replace('/dashboard')
+      commit('setLoading', false)
+    } catch (e) {
+      console.log('something wrong', e)
+    }
   },
   AUTO_LOGIN: ({ commit, dispatch }) => {
     if (!localStorage.getItem('token')) {
@@ -129,10 +133,7 @@ const actions = {
     if (!state.idToken) {
       return
     }
-    globalAxios
-      .post('/users.json' + '?auth=' + state.idToken, userData)
-      .then(res => console.log(res))
-      .catch(error => console.log(error))
+    globalAxios.post('/users.json' + '?auth=' + state.idToken, userData)
   },
   redirectToDashboard: () => {
     if (!state.idToken) {

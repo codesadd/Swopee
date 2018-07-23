@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container spacer-50">
     <nav class="level is-primary">
       <div class="level-item has-text-centered">
         <div>
@@ -21,7 +21,6 @@
       </div>
     </nav>
     <br>
-    {{ bidMoney }}
     <br>
     <hr class="navbar-divider">
     <b-table :data="isEmpty ? [] : transactionDetail.listOfPlayer" :striped="true" :hoverable="true" :loading="false" :mobile-cards="true"
@@ -148,12 +147,15 @@ export default {
     },
     editBid (selected) {
       this.selected = selected
-      this.bidMoney = this.selected.bidToWon
+      this.bidMoney = this.selected.row.bidToWon
       this.isBid = true
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
+  .b-table {
+    padding: 10px
+  }
 </style>

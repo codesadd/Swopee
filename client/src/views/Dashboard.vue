@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container spacer-50">
     <div class="columns is-multiline is-gapless">
       <scope-of-money-app v-for="scope in listOfScope" :scope="scope" :key="scope.id"></scope-of-money-app>
       <div class="column is-3">

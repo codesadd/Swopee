@@ -1,9 +1,8 @@
 <template>
   <div id="app">
-    <header-app></header-app>
-    <div class="container spacer-50">
-      <router-view></router-view>
-    </div>
+    <header-app v-if="isAuth"></header-app>
+    <!-- <div class="container spacer-50"> -->
+      <router-view ></router-view>
     <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
   </div>
 </template>
@@ -22,7 +21,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isLoading: 'loading'
+      isLoading: 'loading',
+      isAuth: 'IS_AUTH'
     })
   },
   created () {

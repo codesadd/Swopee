@@ -1,9 +1,17 @@
 <template>
   <div>
-    <section>
-      <p class="control has-text-centered">
-        <button class="button is-large is-primary" @click="signUpToAuth">Log in with Facebook</button>
-      </p>
+    <section class="hero is-medium is-light is-fullheight">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            SWopper
+          </h1>
+          <h2 class="subtitle">
+            เว็บจัดการ แชร์
+          </h2>
+          <button class="button is-large is-primary" @click="signUpToAuth">Log in with Facebook</button>
+        </div>
+      </div>
     </section>
   </div>
 </template>
@@ -14,7 +22,7 @@ import { mapActions } from 'vuex'
 export default {
   methods: {
     ...mapActions({
-      signUpToAuth: 'signupWithProvider',
+      signUpToAuth: 'LOGIN',
       redirectToDashboard: 'redirectToDashboard'
     })
   },
