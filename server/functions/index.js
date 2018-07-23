@@ -1,4 +1,4 @@
-const functions = require("firebase-functions")
+const functions = require("firebase-functions") 
 const firebase = require('firebase')
 const apiController = require('./src/controller')
 const config = require('./src/config')
