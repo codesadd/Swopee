@@ -1,72 +1,78 @@
-import globalAxios from "axios";
-import router from "../../router";
-import auth from "./auth";
+import globalAxios from 'axios'
+import router from '../../router'
+import auth from './auth'
+import globalFunction from '../../library/helpers/gobal-function'
 
 const state = {
   id: null,
   listOfScope: []
-};
+}
 
 const mutations = {
-  ADD_WALLET: (state, payload) => {
-    state.listOfScope.push(payload);
-    globalAxios
-      .put("users/" + state.id + ".json" + "?auth=" + auth.state.idToken, state)
-      .then(res => console.log(res))
-      .catch(error => console.log(error));
-    router.replace("/transaction/" + payload.id);
+  SET_LIST_OF_SCOPE: (state, payload) => {
+    state.listOfScope = payload
   },
-  INIT_DATA_USER: (state, payload) => {
-    state.listOfScope = payload;
+  SET_WALLET: (state, payload) => {
+    globalAxios
+      .put('users/' + state.id + '/listOfScope/' + payload.id + '.json?auth=' + auth.state.idToken, payload.data)
+      .then(res => {
+        state.listOfScope.push(payload)
+      })
+      .catch(error => console.log(error))
+    router.replace('/transaction/' + payload.id)
+  },
+  INIT_SCOPE_USER: (state, payload) => {
+    state.listOfScope = globalFunction.fetchListOfScope(payload)
   },
   SET_ID_USER: (state, payload) => {
-    state.id = payload;
+    state.id = payload
   },
   CLEAR_LIST: state => {
-    state.listOfScope = null;
+    state.listOfScope = null
   }
-};
+}
 
 const actions = {
-  addPayment: ({ commit }, obj) => {
-    commit("ADD_NEW_MONEY", obj);
+  Add_WALLET: ({ commit }, payload) => {
+    commit('SET_WALLET', payload)
   },
-  addWallet: ({ commit }, payload) => {
-    commit("ADD_WALLET", payload);
-  },
-  initDataUser: ({ commit }, payload) => {
+  INIT_DATA_USER: ({ commit }, payload) => {
     globalAxios
-      .get("users.json" + "?auth=" + auth.state.idToken)
+      .get('users.json' + '?auth=' + auth.state.idToken)
       .then(res => {
         for (let key in res.data) {
-          const user = res.data[key];
-          if (payload == user.uid) {
-            commit("SET_ID_USER", key);
-          }
-          if (user.listOfScope !== undefined && user.listOfScope.length > 0) {
-            commit("INIT_DATA_USER", user.listOfScope);
+          const user = res.data[key]
+          if (payload === user.id) {
+            commit('SET_ID_USER', key)
+            commit('INIT_SCOPE_USER', user.listOfScope)
           }
         }
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error))
+  },
+  ADD_BID_TRANSACTION: ({commit, state}, payload) => {
+    globalAxios
+      .put('users/' + state.id + '/listOfScope/' + payload.id + '/listOfPlayer/' + payload.selected.row.id + '.json?auth=' + auth.state.idToken, payload.selected.row)
+      .then(res => {
+        commit('SET_LIST_OF_SCOPE', state.listOfScope)
+        console.log(state.listOfScope)
+      })
+      .catch(error => console.log(error))
   }
-};
+}
 
 const getters = {
-  dataUser() {
-    return state.user;
+  GET_TRANSACTION: state => id => {
+    return state.listOfScope.filter(e => e.id === id)
   },
-  getTransactionById: state => id => {
-    return state.listOfScope.filter(e => e.id === parseInt(id));
-  },
-  getListOfScope: state => {
-    return state.listOfScope;
+  GET_LIST_OF_SCOPE: state => {
+    return state.listOfScope
   }
-};
+}
 
 export default {
   state,
   mutations,
   actions,
   getters
-};
+}

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="columns is-multiline is-mobile">
+  <div class="container spacer-50">
+    <div class="columns is-multiline is-gapless">
       <scope-of-money-app v-for="scope in listOfScope" :scope="scope" :key="scope.id"></scope-of-money-app>
       <div class="column is-3">
         <div class="card">
@@ -31,7 +31,7 @@
             </b-field>
           </section>
           <footer class="modal-card-foot">
-            <button class="button" type="button" @click="isComponentModalActive = false">Close</button>
+            <button class="button is-danger" type="button" @click="isComponentModalActive = false">ยกเลิก</button>
               <a class="button is-primary" @click="addNewWallet">เพิ่ม</a>
           </footer>
         </div>
@@ -41,24 +41,24 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import ScopeOfMoney from "@/components/ScopeOfMoney.vue";
+import { mapGetters } from 'vuex'
+import ScopeOfMoney from '@/components/ScopeOfMoney.vue'
 export default {
-  data() {
+  data () {
     return {
       isComponentModalActive: false,
       money: null,
       name: null,
       dateToPay: null
-    };
+    }
   },
   components: {
     ScopeOfMoneyApp: ScopeOfMoney
   },
   methods: {
-    addNewWallet() {
+    addNewWallet () {
       this.$router.push({
-        name: "newWallet",
+        name: 'newWallet',
         params: {
           id: Math.max(Math.floor(Math.random() * 9999999999) + 1, 1),
           ownerInfo: {
@@ -67,31 +67,31 @@ export default {
           initMoney: this.money,
           dateToPay: this.dateToPay
         }
-      });
+      })
     }
   },
   computed: {
     ...mapGetters({
-      dataUsers: "dataUser",
-      listOfScope: "getListOfScope"
+      listOfScope: 'GET_LIST_OF_SCOPE'
     })
   },
   watch: {
-    isComponentModalActive() {
+    isComponentModalActive () {
       if (this.isComponentModalActive) {
-        this.money = null;
-        this.name = null;
-        this.dateToPay = null;
+        this.money = null
+        this.name = null
+        this.dateToPay = null
       }
     }
   }
-};
+}
 </script>
 
 <style scope>
 .card {
   height: 150px !important;
   border-radius: 5px;
+  margin: 10px
 }
 .spacer-33 {
   margin-top: 33px;

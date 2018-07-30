@@ -16,21 +16,21 @@
 
 <script>
 export default {
-  props: ["scope"],
-  data() {
+  props: ['scope'],
+  data () {
     return {
       totalMoney: null,
       totalInterestNow: null
-    };
+    }
   },
-  mounted() {
-    this.totalMoney = this.scope.listOfPlayer.length * this.scope.initMoney;
+  mounted () {
+    this.totalMoney = this.scope.listOfPlayer.length * this.scope.initMoney
     this.totalInterestNow = this.scope.listOfPlayer
       .map(player => player.bidToWon)
-      .reduce((sumInterest, num) => sumInterest + num);
+      .reduce((sumInterest, num) => sumInterest + num)
   },
   methods: {}
-};
+}
 </script>
 
 <style scope>

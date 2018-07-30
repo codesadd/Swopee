@@ -1,5 +1,5 @@
 {
-  "name": "swoppee",
+  "name": "swopper",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,18 +10,19 @@
   "dependencies": {
     "axios": "^0.18.0",
     "buefy": "^0.6.6",
+    "build": "^0.1.4",
     "firebase": "^5.2.0",
     "vue": "^2.5.16",
-    "vue-cleave": "^1.2.2",
+    "vue-cleave-component": "^2.0.1",
     "vue-currency-filter": "^2.2.6",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/eslint-config-prettier": "^3.0.0-rc.3",
     "@vue/cli-plugin-babel": "^3.0.0-beta.15",
     "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
     "@vue/cli-service": "^3.0.0-beta.15",
+    "@vue/eslint-config-prettier": "^3.0.0-rc.3",
     "@vue/eslint-config-standard": "^3.0.0-rc.3",
     "babel-preset-stage-2": "^6.24.1",
     "vue-template-compiler": "^2.5.16"

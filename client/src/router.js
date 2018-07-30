@@ -1,42 +1,42 @@
-import Vue from "vue";
-import Router from "vue-router";
-import Money from "./views/Money.vue";
-import Dashboard from "@/views/Dashboard";
-import Transaction from "@/views/Transaction";
-import NewWallet from "@/views/NewWallet";
-import AuthForm from "@/views/Login";
-import auth from "./store/modules/auth";
+import Vue from 'vue'
+import Router from 'vue-router'
+import Money from '@/views/Money.vue'
+import Dashboard from '@/views/Dashboard'
+import Transaction from '@/views/Transaction'
+import NewWallet from '@/views/NewWallet'
+import AuthForm from '@/views/Login'
+import auth from '@/store/modules/auth'
 
-Vue.use(Router);
+Vue.use(Router)
 
 let router = new Router({
-  mode: "history",
+  mode: 'history',
   routes: [
     {
-      path: "/money",
-      name: "money",
+      path: '/money',
+      name: 'money',
       component: Money,
       meta: {
         requiresGuest: true
       }
     },
     {
-      path: "/dashboard",
-      name: "dashboard",
+      path: '/dashboard',
+      name: 'dashboard',
       component: Dashboard,
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: "/new-wallet",
-      name: "newWallet",
+      path: '/new-wallet/:id',
+      name: 'newWallet',
       component: NewWallet,
       beforeEnter: (to, from, next) => {
         if (to.params.id) {
-          next();
+          next()
         } else {
-          next("/dashboard");
+          next('/dashboard')
         }
       },
       meta: {
@@ -44,20 +44,20 @@ let router = new Router({
       }
     },
     {
-      path: "/transaction/:id",
-      name: "transaction",
+      path: '/transaction/:id',
+      name: 'transaction',
       component: Transaction,
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: "/",
-      name: "home",
+      path: '/',
+      name: 'home',
       component: AuthForm
     }
   ]
-});
+})
 
 router.beforeEach((to, from, next) => {
   // check for requires Auth
@@ -65,14 +65,14 @@ router.beforeEach((to, from, next) => {
     if (!auth.state.idToken) {
       // go to login page
       next({
-        path: "/"
-      });
+        path: '/'
+      })
     } else {
-      next();
+      next()
     }
   } else {
-    next();
+    next()
   }
-});
+})
 
-export default router;
+export default router
