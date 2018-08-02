@@ -135,7 +135,7 @@ const actions = {
     }
     globalAxios.post('/users.json' + '?auth=' + state.idToken, userData)
   },
-  redirectToDashboard: () => {
+  REDIRECT_TO_DASHBOARD: () => {
     if (!state.idToken) {
       return
     }
