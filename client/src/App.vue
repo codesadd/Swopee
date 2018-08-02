@@ -3,6 +3,7 @@
     <header-app v-if="isAuth"></header-app>
     <!-- <div class="container spacer-50"> -->
       <router-view ></router-view>
+    <!-- </div> -->
     <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
   </div>
 </template>
